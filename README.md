@@ -20,3 +20,5 @@ Site estático do Studio AS (beleza, cuidado e estilo), com layout moderno e se�
 ## Publicação
 
 O conteúdo já foi versionado e enviado para a branch `main` do repositório.
+
+Atualização rápida: branch yolo-branch para teste de PR.
