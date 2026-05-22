@@ -2,7 +2,7 @@
 
 ![Designer](https://img.shields.io/badge/Designer-Portfolio-111111?style=for-the-badge&logo=adobecreativecloud&logoColor=white)
 ![Figma](https://img.shields.io/badge/Figma-Design-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
-![Notion](https://img.shields.io/badge/Notion-Workspace-000000?style=for-the-badge&logo=notion&logoColor=white)
+[![Notion](https://img.shields.io/badge/Notion-Workspace-000000?style=for-the-badge&logo=notion&logoColor=white)](https://www.notion.so/login)
 
 Site estático do Studio AS (beleza, cuidado e estilo), com layout moderno e seção completa de serviços/preços.
 
