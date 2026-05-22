@@ -122,6 +122,27 @@
     <p>© 2026 — Todos os direitos reservados.</p>
   </footer>
 
+  <button class="chat-toggle" id="chatToggle" aria-label="Abrir atendimento">Atendimento</button>
+  <section class="chat-agent" id="chatAgent" aria-live="polite">
+    <header>
+      <strong>Agente Studio AS</strong>
+      <button type="button" id="chatClose" aria-label="Fechar atendimento">×</button>
+    </header>
+    <div class="chat-body" id="chatBody">
+      <p class="bot-msg">Olá! Sou o atendimento virtual do Studio AS. Posso te ajudar com serviços, preços, horário e agendamento.</p>
+    </div>
+    <div class="chat-quick">
+      <button type="button" data-question="precos">Preços</button>
+      <button type="button" data-question="servicos">Serviços</button>
+      <button type="button" data-question="horario">Horário</button>
+      <button type="button" data-question="agendar">Agendar</button>
+    </div>
+    <form class="chat-input" id="chatForm">
+      <input id="chatText" type="text" placeholder="Digite sua dúvida..." autocomplete="off" />
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+
   <a class="floating-wpp" href="https://wa.me/?text=Olá!%20Gostaria%20de%20agendar%20um%20horário%20no%20Studio%20AS." target="_blank" rel="noreferrer" aria-label="Agendar no WhatsApp">WA</a>
 
   <script>
@@ -134,6 +155,66 @@
     document.querySelectorAll('.reveal').forEach((el, i) => {
       el.style.transitionDelay = `${i * 90}ms`;
       observer.observe(el);
+    });
+
+    const chatToggle = document.getElementById('chatToggle');
+    const chatClose = document.getElementById('chatClose');
+    const chatAgent = document.getElementById('chatAgent');
+    const chatBody = document.getElementById('chatBody');
+    const chatForm = document.getElementById('chatForm');
+    const chatText = document.getElementById('chatText');
+    const quickButtons = document.querySelectorAll('.chat-quick button');
+
+    const answers = {
+      greeting: 'Que bom falar com você. Me conta: você quer cuidar do cabelo, sobrancelhas/cílios ou depilação?',
+      precos: 'Claro! Temos a tabela completa em "Serviços e Preços". Alguns exemplos: Escova a partir de R$ 25, Selagem de R$ 150 a R$ 250 e Mechas de R$ 150 a R$ 250. Se quiser, te ajudo a encontrar o serviço ideal para seu objetivo.',
+      servicos: 'A gente atende cabelo (corte, coloração, escova, selagem e mechas), depilação, sobrancelhas, micropigmentação e extensão de cílios. Quer que eu te recomende por resultado (volume, brilho, definição ou correção)?',
+      horario: 'Atendemos com hora marcada para te atender com calma e qualidade. Se você quiser, já te encaminho para confirmar os horários de hoje no WhatsApp.',
+      agendar: 'Perfeito, vamos agendar. Toque no botão verde de WhatsApp e já abrimos sua mensagem: https://wa.me/?text=Olá!%20Gostaria%20de%20agendar%20um%20horário%20no%20Studio%20AS.'
+    };
+
+    function addMessage(text, fromUser) {
+      const msg = document.createElement('p');
+      msg.className = fromUser ? 'user-msg' : 'bot-msg';
+      msg.textContent = text;
+      chatBody.appendChild(msg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function getReply(input) {
+      const value = input.toLowerCase();
+      if (value.includes('oi') || value.includes('olá') || value.includes('ola') || value.includes('bom dia') || value.includes('boa tarde') || value.includes('boa noite')) return answers.greeting;
+      if (value.includes('pre') || value.includes('valor') || value.includes('quanto')) return answers.precos;
+      if (value.includes('serv') || value.includes('faz') || value.includes('corte') || value.includes('mecha')) return answers.servicos;
+      if (value.includes('hora') || value.includes('atendimento') || value.includes('funciona') || value.includes('aberto')) return answers.horario;
+      if (value.includes('agend') || value.includes('whats') || value.includes('marcar')) return answers.agendar;
+      return 'Entendi. Posso te ajudar com preços, serviços, horário e agendamento. Se preferir um atendimento direto, eu te encaminho para o WhatsApp agora mesmo.';
+    }
+
+    chatToggle.addEventListener('click', () => {
+      chatAgent.classList.toggle('open');
+      if (chatAgent.classList.contains('open')) chatText.focus();
+    });
+
+    chatClose.addEventListener('click', () => {
+      chatAgent.classList.remove('open');
+    });
+
+    quickButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const key = button.getAttribute('data-question');
+        addMessage(button.textContent, true);
+        setTimeout(() => addMessage(answers[key], false), 450);
+      });
+    });
+
+    chatForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const value = chatText.value.trim();
+      if (!value) return;
+      addMessage(value, true);
+      chatText.value = '';
+      setTimeout(() => addMessage(getReply(value), false), 550);
     });
   </script>
 </body>
